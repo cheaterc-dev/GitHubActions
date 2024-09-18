@@ -1,0 +1,15 @@
+
+name: First Workflow
+on: [push]
+
+jobs:
+  run-first-command:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display some Text
+        run: echo "Some text"
+      - name: Command in M
+        run: |
+          pwd
+          ls -a
+

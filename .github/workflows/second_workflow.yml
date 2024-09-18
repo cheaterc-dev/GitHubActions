@@ -16,9 +16,9 @@ jobs:
     steps:
       - name: Display Node version
         run: node -v
- run-second-command:
-   runs-on: macos-latest
-   needs: run-first-command
-   steps:
-     - name: Display node Version
-       run: node -v
+  run-second-command:
+    runs-on: macos-latest
+    needs: run-first-command
+    steps:
+      - name: Display node Version
+        run: node -v

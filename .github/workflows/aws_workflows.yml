@@ -20,4 +20,4 @@ jobs:
 
     - name: Test SSH Connection to EC2
       run: |
-        ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.IPAWS }} "hostname"
+        ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.IPAWS }} "hostname"

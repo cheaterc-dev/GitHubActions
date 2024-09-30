@@ -1,0 +1,32 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main  # Замените на вашу ветку
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH key
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.PASSWORD_AWS }}
+
+      - name: Copy Dockerfile and related files to EC2
+        run: |
+          scp -o StrictHostKeyChecking=no ./Dockerfile ec2-user@${{ secrets.IPAWS }}:/home/ec2-user/
+          scp -o StrictHostKeyChecking=no ./nginx.conf ec2-user@${{ secrets.IPAWS }}:/home/ec2-user/
+          scp -r -o StrictHostKeyChecking=no ./html ec2-user@${{ secrets.IPAWS }}:/home/ec2-user/
+
+      - name: Build Docker image on EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.IPAWS }} << EOF
+            cd /home/ec2-user/
+            docker build -t your_image_name .
+          EOF

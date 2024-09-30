@@ -1,0 +1,23 @@
+name: Test SSH Connection
+
+on:
+  push:
+    branches:
+      - main  # или любая ветка, на которую вы хотите реагировать
+
+jobs:
+  test-ssh:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up SSH key
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.PASSWORD_AWS }}
+
+    - name: Test SSH Connection to EC2
+      run: |
+        ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.IPAWS }} "hostname"
